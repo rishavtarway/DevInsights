@@ -5,7 +5,7 @@ export function useCommitMetrics(repoId: string, timeRange: 'day' | 'week' | 'mo
   return useQuery(['metrics', 'commit', repoId, timeRange], async () => {
     // Calculate time range
     const now = new Date();
-    let startDate = new Date();
+    const startDate = new Date();
     
     if (timeRange === 'day') {
       startDate.setDate(now.getDate() - 1);

@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase/client';
 import { getUserRepositories } from '@/lib/github/api';
+import { Repository } from '@/types';
+
+// Interface for GitHub API response
+interface GitHubRepo {
+    id: number;
+    name: string;
+    full_name: string;
+    html_url: string;
+    description: string | null;
+  }
 
 export function RepositoryConnect({ organizationId }: { organizationId?: string }) {
   const [loading, setLoading] = useState(false);
-  const [repositories, setRepositories] = useState<any[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
   const [selectedRepos, setSelectedRepos] = useState<string[]>([]);
   const [currentOrgId, setCurrentOrgId] = useState<string | null>(organizationId || null);
   const [isGitHubAuthenticated, setIsGitHubAuthenticated] = useState(false);
@@ -67,7 +77,7 @@ export function RepositoryConnect({ organizationId }: { organizationId?: string 
     fetchOrgId();
   }, [currentOrgId]);
 
-  // Fetch repositories from GitHub
+  // Fetch repositories from GitHub and transform to Repository type
   const fetchGitHubRepositories = async () => {
     setLoading(true);
     try {
@@ -77,8 +87,23 @@ export function RepositoryConnect({ organizationId }: { organizationId?: string 
       const token = session.provider_token;
       if (!token) throw new Error('Missing GitHub access token');
       
-      const repos = await getUserRepositories(token);
-      setRepositories(repos);
+      // 👇 Explicitly type the response!
+      const githubRepos: GitHubRepo[] = await getUserRepositories(token);
+      
+      const transformedRepos: Repository[] = githubRepos.map((repo) => ({
+        id: repo.id.toString(),
+        org_id: currentOrgId || '',
+        name: repo.name,
+        full_name: repo.full_name,
+        platform: 'github',
+        external_id: repo.id.toString(),
+        url: repo.html_url,
+        description: repo.description || '',
+        created_at: new Date().toISOString(),
+        last_synced_at: new Date().toISOString()
+      }));
+  
+      setRepositories(transformedRepos);
     } catch (error) {
       let errorMessage = 'Failed to fetch repositories';
       if (error instanceof Error) {
@@ -106,13 +131,15 @@ export function RepositoryConnect({ organizationId }: { organizationId?: string 
     setLoading(true);
     try {
       const selectedRepoDetails = repositories
-        .filter(repo => selectedRepos.includes(repo.id.toString()))
+        .filter(repo => selectedRepos.includes(repo.id))
         .map(repo => ({
           org_id: currentOrgId,
           name: repo.name,
           platform: 'github',
-          external_id: repo.id.toString(),
-          url: repo.html_url
+          external_id: repo.external_id,
+          url: repo.url,
+          created_at: repo.created_at,
+          last_synced_at: repo.last_synced_at
         }));
       
       const { error } = await supabase
@@ -175,8 +202,8 @@ export function RepositoryConnect({ organizationId }: { organizationId?: string 
                 <input
                   type="checkbox"
                   id={`repo-${repo.id}`}
-                  checked={selectedRepos.includes(repo.id.toString())}
-                  onChange={() => toggleRepositorySelection(repo.id.toString())}
+                  checked={selectedRepos.includes(repo.id)}
+                  onChange={() => toggleRepositorySelection(repo.id)}
                   className="h-4 w-4"
                 />
                 <label htmlFor={`repo-${repo.id}`} className="flex-1 cursor-pointer">

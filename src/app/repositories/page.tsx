@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { RepositoryConnect } from '@/components/repository/RepositoryConnect';
 import { supabase } from '@/lib/supabase/client';
+import { Repository } from '@/types';
 
 export default function RepositoriesPage() {
-  const [repositories, setRepositories] = useState<any[]>([]);
+    const [repositories, setRepositories] = useState<Repository[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

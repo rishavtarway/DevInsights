@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { supabase } from '@/lib/supabase/client';
+import { Insight } from '@/types'; 
 
 export default function InsightsPage() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [insights, setInsights] = useState<any[]>([]);
+  const [insights, setInsights] = useState<Insight[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

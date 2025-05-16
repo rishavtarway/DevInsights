@@ -1,16 +1,14 @@
 import { supabase } from '@/lib/supabase/client';
-import { generateInsight } from '@/lib/ai/openai';
-import { useCommitMetrics, usePullRequestMetrics } from '@/hooks/useMetrics';
+import { generateInsight } from '@/lib/ai/openai'; 
 
 export async function generateAndStoreInsights(repoId: string, orgId: string) {
   try {
-    // First, get the repository details
+    // Get repository details
     const { data: repoData, error: repoError } = await supabase
       .from('repositories')
       .select('*')
       .eq('id', repoId)
       .single();
-      
     if (repoError) throw repoError;
     if (!repoData) throw new Error('Repository not found');
     
@@ -22,7 +20,6 @@ export async function generateAndStoreInsights(repoId: string, orgId: string) {
       .eq('metric_type', 'commit')
       .gte('timestamp', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
       .order('timestamp');
-      
     if (commitError) throw commitError;
     
     // Get PR metrics for the last week
@@ -33,16 +30,12 @@ export async function generateAndStoreInsights(repoId: string, orgId: string) {
       .eq('metric_type', 'pr')
       .gte('timestamp', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
       .order('timestamp');
-      
     if (prError) throw prError;
     
-    // Generate insights using OpenAI
-    const insight = await generateInsight(
-      repoData.name,
-      commitData || [],
-      prData || []
-    );
-    
+    // Combine metrics and generate insight
+    const allMetrics = [...(commitData || []), ...(prData || [])];
+    const insight = await generateInsight(allMetrics);
+
     // Store the insight in the database
     const { error: insertError } = await supabase
       .from('insights')
@@ -53,7 +46,6 @@ export async function generateAndStoreInsights(repoId: string, orgId: string) {
         recommendation: insight.recommendation,
         priority: insight.priority
       });
-      
     if (insertError) throw insertError;
     
     return insight;

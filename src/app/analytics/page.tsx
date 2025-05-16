@@ -6,7 +6,15 @@ import { supabase } from '@/lib/supabase/client';
 
 export default function AnalyticsPage() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [metrics, setMetrics] = useState<any[]>([]);
+  interface Metric {
+    id: string;
+    repo_id: string;
+    metric_type: 'commit' | 'pr';
+    value: number;
+    timestamp: string;
+  }
+  
+  const [metrics, setMetrics] = useState<Metric[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

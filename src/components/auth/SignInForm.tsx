@@ -1,12 +1,10 @@
-// src/components/auth/SignInForm.tsx
-
 'use client';
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
-export default function SignInForm() {
+export default function SignInForm(): React.JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,23 +17,25 @@ export default function SignInForm() {
     setError(null);
     
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       
       if (error) throw error;
-      
-      // Redirect to dashboard after successful login
       router.push('/dashboard');
-    } catch (err: any) {
-      console.error('Error signing in:', err);
-      setError(err.message || 'Failed to sign in');
+    } catch (err) {
+      console.error("Error signing in:", err);
+      setError(
+        err instanceof Error 
+          ? err.message 
+          : "Failed to sign in"
+      );
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Sign In</h2>

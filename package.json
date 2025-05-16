@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
     "axios": "^1.9.0",
     "date-fns": "^4.1.0",
     "nanoid": "^5.1.5",
-    "next": "15.3.2",
+    "next": "^15.3.2",
+    "openai": "^4.98.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
@@ -24,8 +25,8 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20.17.47",
-    "@types/react": "^19",
+    "@types/node": "^22.15.18",
+    "@types/react": "^19.1.4",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",

@@ -42,7 +42,7 @@ export function useDeleteRepository() {
       return repoId;
     },
     {
-      onSuccess: (_, variables, context) => {
+      onSuccess: () => {
         // Invalidate and refetch repositories query
         queryClient.invalidateQueries('repositories');
       }

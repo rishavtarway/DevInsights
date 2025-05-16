@@ -7,7 +7,7 @@ export default function SignInButton() {
   const signInWithGitHub = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+        const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,

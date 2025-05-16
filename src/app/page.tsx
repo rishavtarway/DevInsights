@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import SignInButton from '@/components/auth/SignInButton';
 import SignInForm from '@/components/auth/SignInForm';
-import { User } from '@supabase/supabase-js'; // Import User type from Supabase
+import { User } from '@supabase/supabase-js';
 
 export default function LandingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null); // Properly type the user state
+  const [user, setUser] = useState<User | null>(null);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   
   useEffect(() => {
@@ -19,7 +19,6 @@ export default function LandingPage() {
         const { data } = await supabase.auth.getUser();
         if (data?.user) {
           setUser(data.user);
-          // Short delay before redirect to show user info
           setTimeout(() => router.push('/dashboard'), 1500);
         }
       } catch (error) {
@@ -31,11 +30,11 @@ export default function LandingPage() {
     
     checkSession();
   }, [router]);
-  
+
   if (loading) {
     return <div className="flex justify-center py-20 text-gray-700">Loading...</div>;
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm">
@@ -61,11 +60,10 @@ export default function LandingPage() {
           </div>
         </div>
       </header>
-      
+
       <main>
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           {user ? (
-            // Show user info if logged in (will redirect shortly)
             <div className="mx-auto max-w-md bg-white p-6 rounded-lg shadow-md mb-8">
               <h2 className="text-xl font-bold mb-4 text-center text-gray-800">Currently Signed In</h2>
               <div className="space-y-2 text-gray-700">
@@ -94,7 +92,7 @@ export default function LandingPage() {
               </div>
             </div>
           )}
-          
+
           {!user && (
             <div className="mt-20">
               <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
