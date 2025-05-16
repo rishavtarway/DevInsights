@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DevInsights - Developer Productivity Analytics Platform
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-14.0.0-black?logo=next.js)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-3.0-blue?logo=supabase)](https://supabase.com)
 
-First, run the development server:
+![Dashboard Preview](./screenshots/Screenshot%202025-05-16%20at%202.23.13 PM.png)
 
-```bash
+## 🚀 Features
+- **Repository Analytics**: Track commits, PRs, and code review metrics
+- **AI-Powered Insights**: Get automated recommendations (beta)
+- **Team Collaboration**: Shared dashboards with role-based access
+- **GitHub Integration**: Connect repos in 1 click
+
+## 💻 Tech Stack
+| Component          | Technology                          |
+|---------------------|-------------------------------------|
+| Frontend            | Next.js 14, TypeScript, Tailwind CSS|
+| Backend             | Supabase (PostgreSQL, Auth, RLS)    |
+| AI                  | OpenAI API (Future)                 |
+| Deployment          | Vercel                              |
+| Tools               | V0, Shadcn UI, React-Query          |
+
+## 🔍 Why DevInsights?
+- **For Developers**: Identify personal productivity trends
+- **For Teams**: Spot bottlenecks in code review cycles
+- **For Managers**: Data-driven sprint planning
+
+## 🛠️ Local Setup
+
+git clone https://github.com/rishavtarway/devinsights.git
+cd devinsights
+npm install
+cp .env.example .env.local # Add Supabase keys
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📈 Future Roadmap
+- [ ] AI-driven anomaly detection
+- [ ] Slack/Teams integration
+- [ ] Custom metric builder
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🙋 FAQ
+**Q: How is data secured?**  
+A: Supabase RLS ensures users only access their org's data.
 
-## Learn More
+**Q: Can I self-host?**  
+A: Yes! Docker setup coming soon.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📸 Screenshots
+| Sign-In            | Dashboard          |
+|---------------------|--------------------|
+| ![Sign-In](./screenshots/Screenshot%202025-05-16%20at%202.26.12 PM.png) | ![Dashboard](./screenshots/Screenshot%202025-05-16%20at%202.27.38 PM.png) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
